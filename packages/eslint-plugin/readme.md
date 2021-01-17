@@ -1,16 +1,18 @@
 # @copyist/eslint-plugin
 
-一个简单eslint插件，需要添加相关依赖
+一个简单eslint插件
 
+```bash
+yarn add @copyist/eslint-plugin -D
+```
+
+需要配合相关依赖
 ```bash
 yarn add eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb-base -D # js # prettier@2.0.0?
 yarn add eslint-config-airbnb eslint-plugin-react -D  # react
 yarn add @typescript-eslint/eslint-plugin -D  # ts
 ```
 
-```bash
-yarn add @copyist/eslint-plugin -D
-```
 
 
 .vscode/settings.json
