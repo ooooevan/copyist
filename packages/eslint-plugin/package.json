@@ -1,6 +1,6 @@
 {
   "name": "@copyist/eslint-plugin",
-  "version": "0.0.2-alpha.2",
+  "version": "0.0.2",
   "main": "index.js",
   "license": "MIT",
   "publishConfig": {
@@ -8,12 +8,12 @@
   },
   "peerDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.13.0",
+    "eslint": "^7.18.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
-    "prettier": "^2.2.1",
-    "eslint": "^7.18.0"
+    "prettier": "^2.2.1"
   },
   "gitHead": "01732bdac721081866f59765862b0b0175dc358d"
 }
