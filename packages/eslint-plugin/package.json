@@ -5,5 +5,6 @@
   "license": "MIT",
   "dependencies": {
     "eslint-plugin-react": "^7.22.0"
-  }
+  },
+  "gitHead": "e01b1d791e0894b98b280cb4f360a05b08a5b016"
 }
