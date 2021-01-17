@@ -1,15 +1,22 @@
 {
   "name": "@copyist/eslint-plugin",
   "version": "0.0.2",
+  "description": "eslint-plugin",
   "main": "index.js",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ooooevan/copyist.git"
+  },
+  "homepage": "https://github.com/ooooevan/copyist.git#readme",
   "peerDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
