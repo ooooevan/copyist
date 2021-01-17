@@ -8,6 +8,9 @@
   "command": {
     "publish": {
       "registry": "https://registry.npmjs.org/"
+    },
+    "version": {
+      "message": "build(release): publish %s"
     }
   }
 }
