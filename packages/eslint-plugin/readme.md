@@ -1,6 +1,6 @@
 # @copyist/eslint-plugin
 
-eslint插件
+eslint插件 
 
 ```bash
 yarn add @copyist/eslint-plugin -D
