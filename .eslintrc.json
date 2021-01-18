@@ -1,0 +1,10 @@
+{
+  "extends": ["plugin:@copyist/core-ts"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@copyist"],
+  "rules": {
+    "global-require": "off"
+  }
+}

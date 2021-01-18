@@ -11,4 +11,4 @@ chore: 构建过程或辅助工具修改
 其他：build、ci、revert
 */
 
-module.exports = { extends: ['@commitlint/config-conventional'] }
+module.exports = { extends: ['@commitlint/config-conventional'] };

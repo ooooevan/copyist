@@ -10,7 +10,7 @@ yarn add @copyist/eslint-plugin -D
 ```bash
 yarn add eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb-base -D # js # prettier@2.0.0?
 yarn add eslint-config-airbnb eslint-plugin-react -D  # react
-yarn add @typescript-eslint/eslint-plugin -D  # ts
+yarn add @typescript-eslint/eslint-plugin @typescript-eslint/parser -D  # ts
 ```
 
 
