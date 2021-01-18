@@ -14,7 +14,7 @@
     "hooks": {
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "prepush": "yarn test"
+      "pre-push": "yarn test"
     }
   },
   "config": {
