@@ -68,7 +68,8 @@
   },
   "include": [
     "packages/**/*",
-     "commitlint.config.js"
+     "commitlint.config.js",
+     "jest.config.js"
   ],
   "files": [
     "lerna.json"
