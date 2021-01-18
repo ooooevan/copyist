@@ -1,10 +1,11 @@
+# @copyist
 
+运行
 ```bash
 yarn global add lerna
 lerna bootstrap
 ```
 
-**module-name名字根据package.json的name字段确定**<br>
 
 * 在`packages/module-a`添加dep-name模块，不加`--scope`的话所以package都会添加依赖
 ```bash

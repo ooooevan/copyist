@@ -9,6 +9,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
+  plugins: ['@typescript-eslint'],
   settings: {
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts'],
