@@ -1,8 +1,9 @@
 module.exports = {
-  extends: [
-    'eslint:recommended',
-    'airbnb-base',
-  ],
+  env: {
+    jest: true,
+    mocha: true,
+  },
+  extends: ['eslint:recommended', 'airbnb-base'],
   settings: {
     'import/extensions': ['.js'],
     'import/resolver': {
@@ -20,5 +21,5 @@ module.exports = {
         mjs: 'never',
       },
     ],
-  }
+  },
 };

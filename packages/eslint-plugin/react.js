@@ -1,6 +1,3 @@
 module.exports = {
-  extends: [
-    './configs/react',
-    './configs/prettier',
-  ].map(require.resolve),
+  extends: ['./configs/react', './configs/prettier'].map(require.resolve),
 };

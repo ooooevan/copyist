@@ -1,7 +1,11 @@
 module.exports = {
+  env: {
+    jest: true,
+    mocha: true,
+  },
   extends: [
     'eslint:recommended',
-    'airbnb-base', 
+    'airbnb-base',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
@@ -33,5 +37,5 @@ module.exports = {
     ],
     'no-useless-constructor': 'off',
     'import/prefer-default-export': 'off',
-  }
+  },
 };

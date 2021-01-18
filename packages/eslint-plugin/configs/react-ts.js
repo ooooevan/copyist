@@ -2,6 +2,8 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true,
+    mocha: true,
   },
   extends: [
     'eslint:recommended',
@@ -48,6 +50,6 @@ module.exports = {
     ],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/explicit-module-boundary-types': 'off'
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
 };
