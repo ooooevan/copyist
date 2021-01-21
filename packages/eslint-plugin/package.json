@@ -1,6 +1,6 @@
 {
   "name": "@copyist/eslint-plugin",
-  "version": "0.0.3-alpha.6",
+  "version": "0.1.0-alpha.0",
   "description": "eslint-plugin",
   "main": "index.js",
   "license": "MIT",

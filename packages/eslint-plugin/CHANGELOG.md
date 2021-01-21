@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.0](https://github.com/ooooevan/copyist/compare/@copyist/eslint-plugin@0.0.3-alpha.6...@copyist/eslint-plugin@0.1.0-alpha.0) (2021-01-21)
+
+
+### Features
+
+* eslint-plugin添加env ([2435858](https://github.com/ooooevan/copyist/commit/2435858c8a1e727f9f0e1d648e4071848ea16d19))
+
+
+
+
+
 ## [0.0.3-alpha.6](https://github.com/ooooevan/copyist/compare/@copyist/eslint-plugin@0.0.3-alpha.5...@copyist/eslint-plugin@0.0.3-alpha.6) (2021-01-18)
 
 
