@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib",                        /* Redirect output structure to the directory. */
+    "rootDir": "./src",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "declaration": true,
+  },
+  "include": ["src"],
+  "exclude": ["__tests__"],
+}
