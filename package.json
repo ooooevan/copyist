@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "commit": "git-cz",
-    "test": "jest"
+    "test": "jest",
+    "lint": "lint-staged",
+    "tsc": "lerna exec --scope @copyist/create-react-app -- tsc"
   },
   "lint-staged": {
     "packages/**/*.{js,ts}": [

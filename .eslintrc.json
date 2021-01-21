@@ -5,6 +5,10 @@
   },
   "plugins": ["@copyist"],
   "rules": {
-    "global-require": "off"
+    "global-require": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-console": "off",
+    "no-unused-expressions": "off",
+    "no-unsafe-assignment": "off"
   }
 }
