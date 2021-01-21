@@ -5,7 +5,8 @@
     "commit": "git-cz",
     "test": "jest",
     "lint": "lint-staged",
-    "tsc": "lerna exec --scope @copyist/create-react-app -- tsc"
+    "tsc": "lerna exec --scope @copyist/create-react-app -- tsc",
+    "pub": "yarn tsc && lerna publish"
   },
   "lint-staged": {
     "packages/**/*.{js,ts}": [
