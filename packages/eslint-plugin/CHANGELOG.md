@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.1](https://github.com/ooooevan/copyist/compare/@copyist/eslint-plugin@0.1.0-alpha.0...@copyist/eslint-plugin@0.1.0-alpha.1) (2021-01-21)
+
+
+### Bug Fixes
+
+* 修改publishConfig ([289c4d2](https://github.com/ooooevan/copyist/commit/289c4d2a4f6ca9348ecb0ddd5c13cba524bf197e))
+
+
+
+
+
 # [0.1.0-alpha.0](https://github.com/ooooevan/copyist/compare/@copyist/eslint-plugin@0.0.3-alpha.6...@copyist/eslint-plugin@0.1.0-alpha.0) (2021-01-21)
 
 
