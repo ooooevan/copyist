@@ -22,7 +22,7 @@
     "README.md"
   ],
   "publishConfig": {
-    "registry": "https://registry.npm.taobao.org/"
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -39,5 +39,6 @@
     "chalk": "^4.1.0",
     "fs-extra": "^9.1.0",
     "semver": "^7.3.4"
-  }
+  },
+  "gitHead": "79f6c3f28eb8ba31d9c1956603d7e928ea3ac169"
 }
