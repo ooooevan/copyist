@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://github.com/ooooevan/copyist/compare/@copyist/create-react-app@0.1.1...@copyist/create-react-app@0.1.2) (2021-01-22)
+
+
+### Bug Fixes
+
+* cra添加scripts ([9cd015e](https://github.com/ooooevan/copyist/commit/9cd015e940738cf34edd5ad3e2e50e68712e799e))
+
+
+
+
+
 ## [0.1.1](https://github.com/ooooevan/copyist/compare/@copyist/create-react-app@0.1.0...@copyist/create-react-app@0.1.1) (2021-01-21)
 
 
