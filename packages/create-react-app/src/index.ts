@@ -126,6 +126,13 @@ function initTemplate(projectRoot: string, appName: string, template: string, us
   const rootPkg = require(path.join(projectRoot, 'package.json'));
   const tempDependencies = { ...templatePkg.package.dependencies, ...rootPkg.dependencies };
   rootPkg.dependencies = tempDependencies;
+  rootPkg.scripts = {
+    start: 'react-scripts start',
+    build: 'react-scripts build',
+    test: 'react-scripts test',
+    eject: 'react-scripts eject',
+    ...rootPkg.scripts,
+  };
   /** 将template复制到root */
   fs.copySync(path.join(tempplatePath, 'template'), projectRoot);
   /** 将template.json合并到package.json */
