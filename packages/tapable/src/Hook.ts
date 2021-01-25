@@ -1,4 +1,4 @@
-export interface ITap {
+export interface Tap {
   /** 类型，不需要传 */
   type?: string;
   /** tap名称 */
@@ -11,25 +11,28 @@ export interface ITap {
   stage?: number;
 }
 
-export interface IInterceptor {
+export interface Interceptor {
   /** call前钩子 */
   call: (...args: string[]) => void;
   /** 注册拦截，可修改tap */
-  register: (tap: ITap) => ITap;
+  register: (tap: Tap) => Tap;
   /** 每个tap回调前的钩子 */
-  tap: (tap: ITap) => void;
+  tap: (tap: Tap) => void;
   /** 循环函数的钩子 */
   loop: (...args: string[]) => void;
 }
 
-export type TapType = 'sync' | 'async';
+enum TapType {
+  sync = 'sync',
+  async = 'async',
+}
 
 export class Hook {
   _args: string[];
 
-  taps: ITap[];
+  taps: Tap[];
 
-  interceptors: IInterceptor[];
+  interceptors: Interceptor[];
 
   constructor(args: string[] = []) {
     this.taps = [];
@@ -37,11 +40,11 @@ export class Hook {
     this.interceptors = [];
   }
 
-  tap = (options: ITap | string, fn: (...args: string[]) => void) => {
-    this._tap('sync', options, fn);
+  tap = (options: Tap | string, fn: (...args: string[]) => void) => {
+    this._tap(TapType.sync, options, fn);
   };
 
-  _tap(type: TapType, options: string | ITap, fn: (...args: string[]) => void) {
+  _tap(type: TapType, options: string | Tap, fn: (...args: string[]) => void) {
     if (typeof options === 'string') {
       options = {
         name: options,
@@ -55,7 +58,7 @@ export class Hook {
     this._insert(options);
   }
 
-  _runRegister(options: ITap) {
+  _runRegister(options: Tap) {
     for (const interceptor of this.interceptors) {
       if (interceptor.register) {
         options = interceptor.register(options);
@@ -64,7 +67,7 @@ export class Hook {
     return options;
   }
 
-  _insert(options: ITap) {
+  _insert(options: Tap) {
     const stage = options.stage || 0;
     let before: Set<string> = new Set();
     if (typeof options.before === 'string') {
@@ -92,7 +95,7 @@ export class Hook {
     this.taps[i] = options;
   }
 
-  intercept(intercetor: IInterceptor) {
+  intercept(intercetor: Interceptor) {
     this.interceptors.push({ ...intercetor });
     if (intercetor.register) {
       for (let i = 0; i < this.taps.length; i++) {

@@ -15,7 +15,9 @@
     "no-param-reassign": "off",
     "no-plusplus": "off",
     "no-continue": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "no-shadow":"off"
+
 
   }
 }
