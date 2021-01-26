@@ -73,3 +73,95 @@ describe('注册tap', () => {
     expect(names).toEqual(['c', 'e', 'd', 'a', 'b']);
   });
 });
+
+describe('call执行tap', () => {
+  it('call执行tap', () => {
+    const fn = jest.fn();
+    let value = '';
+    const hook = new Hook(['a']);
+    hook.tap('tap1', (val) => {
+      value = val;
+    });
+    hook.tap('tap2', fn);
+    hook.call('hahhaha');
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(value).toBe('hahhaha');
+  });
+});
+
+describe('拦截器-register', () => {
+  const fn1 = jest.fn();
+  const fn2 = jest.fn();
+  const fn3 = jest.fn();
+  it('拦截器修改tap', () => {
+    const hook = new Hook();
+    hook.tap('a', fn1);
+    let fns = hook.taps.map((tap) => tap.fn);
+    expect(fns[0]).toBe(fn1);
+
+    hook.intercept({
+      register: (tap) => {
+        tap.fn = fn2;
+        return tap;
+      },
+    });
+    fns = hook.taps.map((tap) => tap.fn);
+    expect(fns[0]).toBe(fn2);
+
+    hook.tap('a', fn3);
+    fns = hook.taps.map((tap) => tap.fn);
+    expect(fns[1]).toBe(fn2);
+  });
+});
+
+describe('拦截器-call', () => {
+  const fn1 = jest.fn();
+  const fn2 = jest.fn();
+  const fn3 = jest.fn();
+  it('调用拦截器-call', () => {
+    const hook = new Hook(['arg1']);
+    hook.tap('a', fn1);
+    const fns = hook.taps.map((tap) => tap.fn);
+    expect(fns[0]).toBe(fn1);
+
+    hook.intercept({
+      call: fn2,
+    });
+    hook.call(1);
+    expect(fn2).toBeCalledWith(1);
+
+    hook.tap('a', fn3);
+    hook.call(2);
+    expect(fn2).toBeCalledWith(2);
+  });
+});
+describe('拦截器-tap', () => {
+  it('调用拦截器-tap', () => {
+    const fn1 = jest.fn();
+    const fn2 = jest.fn();
+    const fn3 = jest.fn();
+    const hook = new Hook(['arg1']);
+    hook.tap('a', fn1);
+    hook.intercept({
+      tap: fn2,
+    });
+    hook.call();
+    expect(fn2).toBeCalledTimes(1);
+
+    hook.tap('a', fn3);
+    hook.call();
+    expect(fn2).toBeCalledTimes(3);
+  });
+  it('调用拦截器-tap无法修改fn', () => {
+    const fn = jest.fn();
+    const hook = new Hook(['arg1']);
+    hook.tap('a', fn);
+    hook.intercept({
+      tap: (tap) => {
+        tap.fn = () => 0;
+      },
+    });
+    hook.call();
+    expect(fn).toBeCalledTimes(1);
+  });
+});
