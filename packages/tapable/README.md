@@ -13,5 +13,10 @@ hook.tap('a', () =>{
   console.log('..');
 })
 ```
-interceptor：register可修改tap
+
+interceptor：register和tap可修改tap内容。
+
+一次性调用call多次，得到的结果一样，即使interceptor.tap的fn。因为hook.call函数变了。只有再次注册tap或者注册interceptor才会reset call方法。所以执行前需要存储要执行的函数
+
+要重置call函数，将call函数实体提出。新建Factory类，用于创建执行的code
 

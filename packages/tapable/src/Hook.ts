@@ -1,35 +1,17 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable import/no-cycle */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable no-new-func */
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable @typescript-eslint/ban-types */
-export interface Tap {
-  /** 类型，不需要传 */
-  type?: string;
-  /** tap名称 */
-  name: string;
-  /** 回调 */
-  fn?: (...args: string[]) => void;
-  /** 再某些tap之前执行 */
-  before?: string[] | string;
-  /** 选择tap插入的优先级，越小越优先 */
-  stage?: number;
-}
 
-export interface Interceptor {
-  /** call前钩子 */
-  call?: (...args: string[]) => void;
-  /** 注册拦截，可修改tap */
-  register?: (tap: Tap) => Tap;
-  /** 每个tap回调前的钩子 */
-  tap?: (tap: Tap) => void;
-  /** 循环函数的钩子 */
-  loop?: (...args: string[]) => void;
-}
+import { HookCodeFactory } from './HookCodeFactory';
+import { CompileOptions, Interceptor, Tap, TapType } from './interfaces/Hook';
 
-enum TapType {
-  sync = 'sync',
-  async = 'async',
-  promise = 'promise',
-}
+const factory = new HookCodeFactory();
 
 export class Hook {
   _args: string[];
@@ -40,10 +22,15 @@ export class Hook {
 
   callfn?: Function;
 
+  _x: ((...args: string[]) => void)[] = [];
+
+  call: (...args: any[]) => any;
+
   constructor(args: string[] = []) {
     this.taps = [];
     this._args = args;
     this.interceptors = [];
+    this.call = this._call;
   }
 
   tap = (options: Tap | string, fn: (...args: string[]) => void) => {
@@ -82,6 +69,7 @@ export class Hook {
   }
 
   _insert(options: Tap) {
+    this._reset();
     const stage = options.stage || 0;
     let before: Set<string> = new Set();
     if (typeof options.before === 'string') {
@@ -118,38 +106,28 @@ export class Hook {
     }
   }
 
-  call(...args: any[]) {
-    this.callfn = this._createFn(TapType.sync);
-    // console.log(this.callfn.toString());
-    this.callfn(...args);
+  _call(...args: any[]) {
+    this.call = this._createCall(TapType.sync);
+    // console.log(this.call.toString());
+    return this.call(...args);
   }
 
-  _createFn(type: TapType) {
-    let code = `
-    var _taps = this.taps;
-    var _fns = this.taps.map(tap => tap.fn);
-    var _ics = this.interceptors;
-    `;
-    let icsIdx = 0;
-    this.interceptors.forEach((ics) => {
-      if (ics.call) {
-        code += `_ics[${icsIdx}].call(${this._args.join(',')})`;
-        icsIdx++;
-      }
+  _reset() {
+    this.call = this._call;
+  }
+
+  compile(options: CompileOptions) {
+    factory.setup(this, options);
+    return factory.create(options);
+  }
+
+  /** 创建call函数 */
+  _createCall(type: TapType) {
+    return this.compile({
+      taps: this.taps,
+      interceptors: this.interceptors,
+      args: this._args,
+      type,
     });
-    const _tapCbs = this.interceptors.map((_i) => _i.tap).filter(Boolean);
-    const fn = new Function(
-      this._args.join(','),
-      (code += `
-      const _tapCbs = _ics.map(_tap=>_tap.tap).filter(Boolean);
-      _taps.forEach((tap, tIdx) => {
-        if (tap.fn) {
-          ${_tapCbs.map((_t, idx) => `_tapCbs[${idx}](tap)`).join(';')}
-          _fns[tIdx](${this._args.join(',')});
-        }
-      });
-    `),
-    );
-    return fn;
   }
 }
