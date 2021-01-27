@@ -16,7 +16,8 @@
     "no-plusplus": "off",
     "no-continue": "off",
     "no-restricted-syntax": "off",
-    "no-shadow":"off"
+    "no-shadow":"off",
+    "@typescript-eslint/unbound-method":"off"
 
 
   }

@@ -152,7 +152,7 @@ describe('拦截器-tap', () => {
     hook.call();
     expect(fn2).toBeCalledTimes(3);
   });
-  it('调用拦截器-tap无法修改fn', () => {
+  it('调用拦截器-tap,连续call结果一致', () => {
     const fn = jest.fn();
     const hook = new Hook(['arg1']);
     hook.tap('a', fn);
@@ -162,6 +162,23 @@ describe('拦截器-tap', () => {
       },
     });
     hook.call();
-    expect(fn).toBeCalledTimes(1);
+    hook.call();
+    expect(fn).toBeCalledTimes(2);
+  });
+  it('调用拦截器-tap,tap可修改fn', () => {
+    const fn = jest.fn();
+    const hook = new Hook(['arg1']);
+    hook.tap('a', fn);
+    hook.intercept({
+      tap: (tap) => {
+        tap.fn = () => 0;
+      },
+    });
+    hook.call();
+    hook.call();
+    expect(fn).toBeCalledTimes(2);
+    hook.tap('a', () => 0);
+    hook.call();
+    expect(fn).toBeCalledTimes(2);
   });
 });

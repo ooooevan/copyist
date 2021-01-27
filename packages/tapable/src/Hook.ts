@@ -1,12 +1,5 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable import/no-cycle */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable no-new-func */
-/* eslint-disable @typescript-eslint/no-implied-eval */
-/* eslint-disable @typescript-eslint/ban-types */
 
 import { HookCodeFactory } from './HookCodeFactory';
 import { CompileOptions, Interceptor, Tap, TapType } from './interfaces/Hook';
@@ -19,8 +12,6 @@ export class Hook {
   taps: Tap[];
 
   interceptors: Interceptor[];
-
-  callfn?: Function;
 
   _x: ((...args: string[]) => void)[] = [];
 
