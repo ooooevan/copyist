@@ -36,4 +36,5 @@ export interface CompileOptions {
 }
 
 export type ArgsFunction = (...args: any[]) => any;
+export type ArgsVoidFunction = (...args: any[]) => void;
 export type ArgsPromiseFunction = (...args: any[]) => Promise<any>;

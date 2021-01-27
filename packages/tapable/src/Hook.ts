@@ -3,6 +3,7 @@
 import {
   ArgsFunction,
   ArgsPromiseFunction,
+  ArgsVoidFunction,
   CompileOptions,
   Interceptor,
   Tap,
@@ -20,7 +21,7 @@ export class Hook {
 
   call: ArgsFunction;
 
-  callAsync: ArgsFunction;
+  callAsync: ArgsVoidFunction;
 
   promise: ArgsPromiseFunction;
 
@@ -52,7 +53,7 @@ export class Hook {
       };
     }
     if (!options.name || typeof options !== 'object') {
-      throw new Error('options格式错误');
+      throw new Error('参数错误');
     }
     options = { type, fn, ...options };
     options = this._runRegister(options);
@@ -113,7 +114,6 @@ export class Hook {
 
   _callAsync(...args: any[]) {
     this.call = this._createCall(TapType.async);
-    console.log(this.call.toString());
     return this.call(...args);
   }
 

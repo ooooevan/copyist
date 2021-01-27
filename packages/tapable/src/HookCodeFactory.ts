@@ -1,6 +1,5 @@
 /* eslint-disable no-new-func */
 /* eslint-disable @typescript-eslint/no-implied-eval */
-/* eslint-disable import/no-cycle */
 import { Hook } from './Hook';
 import { ArgsFunction, CompileOptions, TapType } from './interfaces/Hook';
 
@@ -84,12 +83,11 @@ export class HookCodeFactory {
     const _interceptorsTaps = options.interceptors.map((_i) => _i.tap).filter(Boolean);
     return `
       ${this.callHook(options)}
-      _taps.forEach((tap, tIdx) => {
-        if (tap.fn) {
-          ${_interceptorsTaps.map((_t, idx) => `_interceptorsTaps[${idx}](tap)`).join(';')}
-          _x[tIdx](${this.args(options)});
-        }
-      });
+      for(let i=0;i<_taps.length;i++){
+        const tap = _taps[i];
+        ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap)`).join(';')}
+        _x[i](${this.args(options)});
+      }
     `;
   }
 }
