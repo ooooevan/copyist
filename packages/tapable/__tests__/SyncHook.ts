@@ -182,3 +182,27 @@ describe('拦截器-tap', () => {
     expect(fn).toBeCalledTimes(2);
   });
 });
+
+describe('call_promise', () => {
+  it('promise', async () => {
+    const fn = jest.fn();
+    const fn1 = jest.fn();
+    const hook = new SyncHook(['arg1']);
+    hook.tap('a', fn);
+    await hook.promise().then(fn1);
+    expect(fn).toBeCalledTimes(1);
+    expect(fn1).toBeCalledTimes(1);
+  });
+});
+
+describe('call_async', () => {
+  it('async', () => {
+    const fn = jest.fn();
+    const fn1 = jest.fn();
+    const hook = new SyncHook(['arg1']);
+    hook.tap('a', fn);
+    hook.callAsync('', fn1);
+    expect(fn).toBeCalledTimes(1);
+    expect(fn1).toBeCalledTimes(1);
+  });
+});

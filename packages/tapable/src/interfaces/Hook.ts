@@ -34,3 +34,6 @@ export interface CompileOptions {
   args: any[];
   type: TapType;
 }
+
+export type ArgsFunction = (...args: any[]) => any;
+export type ArgsPromiseFunction = (...args: any[]) => Promise<any>;

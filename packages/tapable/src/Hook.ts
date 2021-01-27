@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { CompileOptions, Interceptor, Tap, TapType } from './interfaces/Hook';
+import {
+  ArgsFunction,
+  ArgsPromiseFunction,
+  CompileOptions,
+  Interceptor,
+  Tap,
+  TapType,
+} from './interfaces/Hook';
 
 export class Hook {
   _args: string[];
@@ -11,13 +18,19 @@ export class Hook {
 
   _x: ((...args: string[]) => void)[] = [];
 
-  call: (...args: any[]) => any;
+  call: ArgsFunction;
+
+  callAsync: ArgsFunction;
+
+  promise: ArgsPromiseFunction;
 
   constructor(args: string[] = []) {
     this.taps = [];
     this._args = args;
     this.interceptors = [];
     this.call = this._call;
+    this.callAsync = this._callAsync;
+    this.promise = this._promise;
   }
 
   tap = (options: Tap | string, fn: (...args: string[]) => void) => {
@@ -95,7 +108,17 @@ export class Hook {
 
   _call(...args: any[]) {
     this.call = this._createCall(TapType.sync);
-    // console.log(this.call.toString());
+    return this.call(...args);
+  }
+
+  _callAsync(...args: any[]) {
+    this.call = this._createCall(TapType.async);
+    console.log(this.call.toString());
+    return this.call(...args);
+  }
+
+  _promise(...args: any[]) {
+    this.call = this._createCall(TapType.promise);
     return this.call(...args);
   }
 
@@ -103,7 +126,7 @@ export class Hook {
     this.call = this._call;
   }
 
-  compile(options: CompileOptions): (...args: any[]) => any {
+  compile(options: CompileOptions): ArgsFunction {
     throw new Error('Method not implemented.');
   }
 

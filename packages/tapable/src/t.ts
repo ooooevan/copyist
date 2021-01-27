@@ -1,36 +1,46 @@
-import { Hook } from '.';
+import { SyncHook } from './SyncHook';
 
 const fn = () => 0;
-const hook = new Hook(['arg1']);
-hook.tap('a', (a) => {
-  console.log('tap', a);
-});
+const hook = new SyncHook(['arg1']);
+hook.tap('a', fn);
+hook.callAsync('', () => 0);
+// console.log(hook.call.toString());
 
-hook.intercept({
-  call: () => {
-    console.log('call...');
-  },
-});
-hook.call(1);
-
-hook.tap('b', (a) => {
-  console.log('tap', a);
-});
-hook.call(2);
-
-// function anonymous(arg1,arg2,arg3
-//   ) {
-
-//       var _taps = this.taps;
-//       var _fns = this.taps.map(tap => tap.fn);
-//       var _ics = this.interceptors;
-
-//         const _tapCbs = _ics.map(_tap=>_tap.tap).filter(Boolean);
-//         _taps.forEach((tap, tIdx) => {
-//           if (tap.fn) {
-//             _tapCbs[0](tap)
-//             _fns[tIdx](arg1,arg2,arg3);
-//           }
-//         });
-
-//   }
+// function anonymous(arg1, arg2, arg3) {
+//   let _context;
+//   const { _x } = this;
+//   return new Promise((_resolve, _reject) => {
+//     let _sync = true;
+//     function _error(_err) {
+//       if (_sync)
+//         _resolve(
+//           Promise.resolve().then(() => {
+//             throw _err;
+//           }),
+//         );
+//       else _reject(_err);
+//     }
+//     const _fn0 = _x[0];
+//     let _hasError0 = false;
+//     try {
+//       _fn0(arg1, arg2, arg3);
+//     } catch (_err) {
+//       _hasError0 = true;
+//       _error(_err);
+//     }
+//     if (!_hasError0) {
+//       const _fn1 = _x[1];
+//       let _hasError1 = false;
+//       try {
+//         _fn1(arg1, arg2, arg3);
+//       } catch (_err) {
+//         _hasError1 = true;
+//         _error(_err);
+//       }
+//       if (!_hasError1) {
+//         _resolve();
+//       }
+//     }
+//     _sync = false;
+//   });
+// }

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable import/no-cycle */
 import { Hook } from './Hook';
-import { CompileOptions } from './interfaces/Hook';
+import { ArgsFunction, CompileOptions, TapType } from './interfaces/Hook';
 
 export class HookCodeFactory {
   config: any;
@@ -13,36 +13,83 @@ export class HookCodeFactory {
 
   /** 创建执行函数 */
   create(options: CompileOptions) {
-    // console.log(options);
-    let code = `
-    var _taps = this.taps;
-    var _ics = this.interceptors;
-    `;
-    let icsIdx = 0;
-    options.interceptors.forEach((ics) => {
-      if (ics.call) {
-        code += `_ics[${icsIdx}].call(${options.args.join(',')});`;
-        icsIdx++;
+    let fn: ArgsFunction;
+    switch (options.type) {
+      case TapType.promise: {
+        let code = this.header();
+        const content = this.contentWithInterceptors(options);
+        code += `
+        return new Promise((resolve,reject) => {
+          ${content}
+          resolve();
+        })
+        `;
+        fn = new Function(this.args(options), code) as ArgsFunction;
+        break;
       }
-    });
-    const _tapCbs = options.interceptors.map((_i) => _i.tap).filter(Boolean);
-    const fn = new Function(
-      options.args.join(','),
-      (code += `
-      const _tapCbs = _ics.map(_tap=>_tap.tap).filter(Boolean);
-      _taps.forEach((tap, tIdx) => {
-        if (tap.fn) {
-          ${_tapCbs.map((_t, idx) => `_tapCbs[${idx}](tap)`).join(';')}
-          this._x[tIdx](${options.args.join(',')});
-        }
-      });
-    `),
-    ) as (...args: any[]) => any;
+      case TapType.async: {
+        let code = this.header();
+        code += this.contentWithInterceptors(options);
+        code += '_callback()';
+        fn = new Function(this.args(options, '_callback'), code) as ArgsFunction;
+        break;
+      }
+      case TapType.sync:
+      default: {
+        let code = this.header();
+        fn = new Function(
+          this.args(options),
+          (code += this.contentWithInterceptors(options)),
+        ) as ArgsFunction;
+        break;
+      }
+    }
     return fn;
   }
 
-  /** 存储fns */
+  /** Hook存储fns */
   setup(instance: Hook, options: CompileOptions) {
     instance._x = options.taps.map((t) => t.fn) as ((...args: any[]) => void)[];
+  }
+
+  /** 头部，定义变量名 */
+  header() {
+    return `
+      const _x = this._x;
+      const _taps = this.taps;
+      const _interceptors = this.interceptors;
+      const _interceptorsTaps = _interceptors.map(_tap=>_tap.tap).filter(Boolean);
+    `;
+  }
+
+  args(options: CompileOptions, cb?: string) {
+    return options.args.concat(cb).join(',');
+  }
+
+  /** interceptor中的call函数 */
+  callHook(options: CompileOptions) {
+    let idx = 0;
+    let code = '';
+    options.interceptors.forEach((interceptor) => {
+      if (interceptor.call) {
+        code += `_interceptors[${idx}].call(${options.args.join(',')});`;
+        idx++;
+      }
+    });
+    return code;
+  }
+
+  /** 执行的函数以及拦截器函数 */
+  contentWithInterceptors(options: CompileOptions) {
+    const _interceptorsTaps = options.interceptors.map((_i) => _i.tap).filter(Boolean);
+    return `
+      ${this.callHook(options)}
+      _taps.forEach((tap, tIdx) => {
+        if (tap.fn) {
+          ${_interceptorsTaps.map((_t, idx) => `_interceptorsTaps[${idx}](tap)`).join(';')}
+          _x[tIdx](${this.args(options)});
+        }
+      });
+    `;
   }
 }

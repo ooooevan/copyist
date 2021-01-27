@@ -20,3 +20,6 @@ interceptor：register和tap可修改tap内容。
 
 要重置call函数，将call函数实体提出。新建Factory类，用于创建执行的code
 
+分离基类Hook和SyncHook
+
+开始实现SyncHook的promise和callAsync

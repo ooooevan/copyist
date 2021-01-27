@@ -9,4 +9,12 @@ export class SyncHook extends Hook {
     factory.setup(this, options);
     return factory.create(options);
   }
+
+  tapAsync = () => {
+    throw new Error('SyncHook 不支持 tapAsync');
+  };
+
+  tapPromise = () => {
+    throw new Error('SyncHook 不支持 tapPromise');
+  };
 }
