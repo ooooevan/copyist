@@ -1,21 +1,21 @@
-import { Hook } from '../src';
+import { SyncHook } from '../src';
 
 describe('注册tap', () => {
   it('有1个tap', () => {
-    const hook = new Hook();
+    const hook = new SyncHook();
     hook.tap('a', () => 0);
     expect(hook.taps.length).toBe(1);
   });
 
   it('有2个tap', () => {
-    const hook = new Hook();
+    const hook = new SyncHook();
     hook.tap('a', () => 0);
     hook.tap('a', () => 0);
     expect(hook.taps.length).toBe(2);
   });
 
   it('按stage优先级排序', () => {
-    const hook = new Hook();
+    const hook = new SyncHook();
     hook.tap(
       {
         name: 'a1',
@@ -41,7 +41,7 @@ describe('注册tap', () => {
   });
 
   it('按before优先级排序', () => {
-    const hook = new Hook();
+    const hook = new SyncHook();
     hook.tap('a', () => 0);
     hook.tap('b', () => 0);
     hook.tap(
@@ -78,7 +78,7 @@ describe('call执行tap', () => {
   it('call执行tap', () => {
     const fn = jest.fn();
     let value = '';
-    const hook = new Hook(['a']);
+    const hook = new SyncHook(['a']);
     hook.tap('tap1', (val) => {
       value = val;
     });
@@ -94,7 +94,7 @@ describe('拦截器-register', () => {
   const fn2 = jest.fn();
   const fn3 = jest.fn();
   it('拦截器修改tap', () => {
-    const hook = new Hook();
+    const hook = new SyncHook();
     hook.tap('a', fn1);
     let fns = hook.taps.map((tap) => tap.fn);
     expect(fns[0]).toBe(fn1);
@@ -119,7 +119,7 @@ describe('拦截器-call', () => {
   const fn2 = jest.fn();
   const fn3 = jest.fn();
   it('调用拦截器-call', () => {
-    const hook = new Hook(['arg1']);
+    const hook = new SyncHook(['arg1']);
     hook.tap('a', fn1);
     const fns = hook.taps.map((tap) => tap.fn);
     expect(fns[0]).toBe(fn1);
@@ -140,7 +140,7 @@ describe('拦截器-tap', () => {
     const fn1 = jest.fn();
     const fn2 = jest.fn();
     const fn3 = jest.fn();
-    const hook = new Hook(['arg1']);
+    const hook = new SyncHook(['arg1']);
     hook.tap('a', fn1);
     hook.intercept({
       tap: fn2,
@@ -154,7 +154,7 @@ describe('拦截器-tap', () => {
   });
   it('调用拦截器-tap,连续call结果一致', () => {
     const fn = jest.fn();
-    const hook = new Hook(['arg1']);
+    const hook = new SyncHook(['arg1']);
     hook.tap('a', fn);
     hook.intercept({
       tap: (tap) => {
@@ -167,7 +167,7 @@ describe('拦截器-tap', () => {
   });
   it('调用拦截器-tap,tap可修改fn', () => {
     const fn = jest.fn();
-    const hook = new Hook(['arg1']);
+    const hook = new SyncHook(['arg1']);
     hook.tap('a', fn);
     hook.intercept({
       tap: (tap) => {

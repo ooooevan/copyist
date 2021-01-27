@@ -37,7 +37,7 @@ export class HookCodeFactory {
         }
       });
     `),
-    ) as (...args: any[]) => void;
+    ) as (...args: any[]) => any;
     return fn;
   }
 

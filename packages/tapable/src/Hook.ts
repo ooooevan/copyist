@@ -1,10 +1,6 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { HookCodeFactory } from './HookCodeFactory';
 import { CompileOptions, Interceptor, Tap, TapType } from './interfaces/Hook';
-
-const factory = new HookCodeFactory();
 
 export class Hook {
   _args: string[];
@@ -107,9 +103,8 @@ export class Hook {
     this.call = this._call;
   }
 
-  compile(options: CompileOptions) {
-    factory.setup(this, options);
-    return factory.create(options);
+  compile(options: CompileOptions): (...args: any[]) => any {
+    throw new Error('Method not implemented.');
   }
 
   /** 创建call函数 */
