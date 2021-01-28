@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable no-new-func */
 /* eslint-disable @typescript-eslint/no-implied-eval */
 import { Hook } from './Hook';
@@ -20,7 +21,7 @@ export class HookCodeFactory {
         code += `
         return new Promise((resolve,reject) => {
           ${content}
-          ${this.tapsResult()}
+          ${this.tapsResult(options)}
         })
         `;
         fn = new Function(this.args(options), code) as ArgsFunction;
@@ -61,7 +62,7 @@ export class HookCodeFactory {
   }
 
   args(options: CompileOptions, cb?: string) {
-    return options.args.concat(cb).join(',');
+    return options.args.concat(cb || []).join(',');
   }
 
   /** interceptor中的call函数 */
@@ -80,16 +81,42 @@ export class HookCodeFactory {
   /** 执行的函数以及拦截器函数 */
   contentWithInterceptors(options: CompileOptions) {
     const _interceptorsTaps = options.interceptors.map((_i) => _i.tap).filter(Boolean);
+    const { taps } = options;
     return `
       ${this.callHook(options)}
-      let result;
-      for(let i=0;i<_taps.length;i++){
+      ${this.tapBefore(options)}
+      ${
+        options.taps.length > 0
+          ? `for(let i=0;i<_taps.length;i++){
         const tap = _taps[i];
         ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap)`).join(';')}
-        result = _x[i](${this.args(options)});
+        ${this.tapCall(options)}
         ${this.tapResult(options.type)}
+      }`
+          : ''
       }
     `;
+  }
+
+  /** tap执行前执行 */
+  tapBefore(options: CompileOptions) {
+    return `let args = ${options.args[0]}
+    let result = args;`;
+  }
+
+  /** tap执行函数 */
+  tapCall(options: CompileOptions) {
+    const { args } = options;
+    let code = '';
+    args.forEach((arg, idx) => {
+      if (idx === 0) {
+        code += `result || ${options.args[0]},`;
+      } else {
+        code += `${arg},`;
+      }
+    });
+    code = code.slice(0, -1);
+    return ` result = _x[i](${code});`;
   }
 
   /** 执行tap的结果处理逻辑 */
@@ -98,7 +125,7 @@ export class HookCodeFactory {
   }
 
   /** 执行完taps返回 */
-  tapsResult(type?: TapType) {
+  tapsResult(options?: CompileOptions) {
     return 'resolve()';
   }
 

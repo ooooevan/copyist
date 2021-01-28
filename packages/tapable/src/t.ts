@@ -1,32 +1,27 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { SyncBailHook } from './SyncBailHook';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { SyncBailHook, SyncHook, SyncWaterfallHook } from '.';
 
-function pify(fn: Function) {
-  return new Promise((resolve, reject) => {
-    fn((err: any, result: unknown) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-}
-async function start() {
-  const h2 = new SyncBailHook(['a', 'b']);
-  h2.tap('A', (a, b) => [a, b]);
-  h2.callAsync(1, 2, (e) => {
-    console.log('a', e);
-  });
-  const a = await pify((cb: any) => h2.callAsync(1, 2, cb));
-  console.log('---', a);
+function start() {
+  const h3 = new SyncHook(['test', 'arg2', 'arg3']);
+
+  const mock4 = () => 0;
+  const mock5 = () => 0;
+
+  h3.tap('E', mock4);
+  h3.tap('F', mock5);
+  h3.call('1', 2, 3);
+  console.log(h3.call.toString());
+  // console.log('promise', hook.promise.toString());
   // console.log(hook.callAsync.toString());
 }
 
-start()
-  .then((r) => {
-    console.log('r', r);
-  })
-  .catch((e) => {
-    console.log('err', e);
-  });
+start();
+// .then((r) => {
+//   console.log('r', r);
+// })
+// .catch((e) => {
+//   console.log('e', e);
+// });
 // console.log(hook.call.toString());
 
 // function anonymous(arg1, arg2, arg3) {
