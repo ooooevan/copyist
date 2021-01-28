@@ -113,13 +113,13 @@ export class Hook {
   }
 
   _callAsync(...args: any[]) {
-    this.call = this._createCall(TapType.async);
-    return this.call(...args);
+    this.callAsync = this._createCall(TapType.async);
+    return this.callAsync(...args);
   }
 
   _promise(...args: any[]) {
-    this.call = this._createCall(TapType.promise);
-    return this.call(...args);
+    this.promise = this._createCall(TapType.promise);
+    return this.promise(...args);
   }
 
   _reset() {

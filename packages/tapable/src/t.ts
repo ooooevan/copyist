@@ -1,9 +1,32 @@
-import { SyncHook } from './SyncHook';
+/* eslint-disable @typescript-eslint/ban-types */
+import { SyncBailHook } from './SyncBailHook';
 
-const fn = () => 0;
-const hook = new SyncHook(['arg1']);
-hook.tap('a', fn);
-hook.callAsync('', () => 0);
+function pify(fn: Function) {
+  return new Promise((resolve, reject) => {
+    fn((err: any, result: unknown) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}
+async function start() {
+  const h2 = new SyncBailHook(['a', 'b']);
+  h2.tap('A', (a, b) => [a, b]);
+  h2.callAsync(1, 2, (e) => {
+    console.log('a', e);
+  });
+  const a = await pify((cb: any) => h2.callAsync(1, 2, cb));
+  console.log('---', a);
+  // console.log(hook.callAsync.toString());
+}
+
+start()
+  .then((r) => {
+    console.log('r', r);
+  })
+  .catch((e) => {
+    console.log('err', e);
+  });
 // console.log(hook.call.toString());
 
 // function anonymous(arg1, arg2, arg3) {

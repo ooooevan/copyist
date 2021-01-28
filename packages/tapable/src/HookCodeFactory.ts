@@ -20,7 +20,7 @@ export class HookCodeFactory {
         code += `
         return new Promise((resolve,reject) => {
           ${content}
-          resolve();
+          ${this.tapsResult()}
         })
         `;
         fn = new Function(this.args(options), code) as ArgsFunction;
@@ -29,17 +29,16 @@ export class HookCodeFactory {
       case TapType.async: {
         let code = this.header();
         code += this.contentWithInterceptors(options);
-        code += '_callback()';
-        fn = new Function(this.args(options, '_callback'), code) as ArgsFunction;
+        code += this.callbackResult(options.type);
+        fn = new Function(this.args(options, 'callback'), code) as ArgsFunction;
         break;
       }
       case TapType.sync:
       default: {
         let code = this.header();
-        fn = new Function(
-          this.args(options),
-          (code += this.contentWithInterceptors(options)),
-        ) as ArgsFunction;
+        code += this.contentWithInterceptors(options);
+        code += this.callbackResult(options.type);
+        fn = new Function(this.args(options), code) as ArgsFunction;
         break;
       }
     }
@@ -83,11 +82,31 @@ export class HookCodeFactory {
     const _interceptorsTaps = options.interceptors.map((_i) => _i.tap).filter(Boolean);
     return `
       ${this.callHook(options)}
+      let result;
       for(let i=0;i<_taps.length;i++){
         const tap = _taps[i];
         ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap)`).join(';')}
-        _x[i](${this.args(options)});
+        result = _x[i](${this.args(options)});
+        ${this.tapResult(options.type)}
       }
     `;
+  }
+
+  /** 执行tap的结果处理逻辑 */
+  tapResult(type?: TapType) {
+    return '';
+  }
+
+  /** 执行完taps返回 */
+  tapsResult(type?: TapType) {
+    return 'resolve()';
+  }
+
+  /** 执行完taps回调 */
+  callbackResult(type?: TapType): string {
+    if (type === TapType.sync) {
+      return '';
+    }
+    return 'callback()';
   }
 }

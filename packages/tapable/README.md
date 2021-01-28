@@ -23,3 +23,6 @@ interceptor：register和tap可修改tap内容。
 分离基类Hook和SyncHook
 
 开始实现SyncHook的promise和callAsync
+
+实现SyncBailHook，在之前基础上判断tap执行结果，不是undefined则直接返回当前结果。最后callback(null, result),第一个参数是null(虽然是多余的)，第二个参数是result
+

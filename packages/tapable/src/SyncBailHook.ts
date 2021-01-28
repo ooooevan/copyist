@@ -1,8 +1,25 @@
+/* eslint-disable max-classes-per-file */
 import { Hook } from './Hook';
 import { HookCodeFactory } from './HookCodeFactory';
-import { CompileOptions } from './interfaces/Hook';
+import { CompileOptions, TapType } from './interfaces/Hook';
 
-const factory = new HookCodeFactory();
+class SyncBailHookCodeFactory extends HookCodeFactory {
+  callbackResult(type?: TapType) {
+    if (type === TapType.sync) {
+      return '';
+    }
+    return 'callback(null, result)';
+  }
+
+  tapResult(type?: TapType) {
+    return `if (result !== undefined){
+      ${(type === TapType.promise && 'resolve(result);') || ''}
+      ${(type === TapType.async && 'callback(null, result);') || ''}
+      return result;
+    }`;
+  }
+}
+const factory = new SyncBailHookCodeFactory();
 
 /** 同步串行，函数不返回undefined，跳过剩下函数 */
 export class SyncBailHook extends Hook {
