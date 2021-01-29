@@ -13,7 +13,7 @@ class SyncWaterfallHookCodeFactory extends HookCodeFactory {
     return 'resolve(result)';
   }
 
-  tapCall(options: CompileOptions) {
+  tapCall(options: CompileOptions, i: number) {
     const { args } = options;
     let code = '';
     args.forEach((arg, idx) => {
@@ -23,7 +23,7 @@ class SyncWaterfallHookCodeFactory extends HookCodeFactory {
         code += arg;
       }
     });
-    return ` result = _x[i](${code}) || result;`;
+    return ` result = _x[${i}](${code}) || result;`;
   }
 
   callbackResult(type?: TapType) {

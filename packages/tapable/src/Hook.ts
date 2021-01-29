@@ -124,6 +124,8 @@ export class Hook {
 
   _reset() {
     this.call = this._call;
+    this.promise = this._promise;
+    this.callAsync = this._callAsync;
   }
 
   compile(options: CompileOptions): ArgsFunction {

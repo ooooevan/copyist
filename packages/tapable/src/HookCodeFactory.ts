@@ -90,14 +90,16 @@ export class HookCodeFactory {
   /** taps执行 */
   content(options: CompileOptions) {
     const _interceptorsTaps = options.interceptors.map((_i) => _i.tap).filter(Boolean);
-    return options.taps.length > 0
-      ? `for(let i=0;i<_taps.length;i++){
-        const tap = _taps[i];
-        ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap)`).join(';')}
-        ${this.tapCall(options)}
+    let code = '';
+    options.taps.forEach((tap, i) => {
+      code += `
+      var tap${i} = _taps[${i}];
+      ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap${i})`).join(';')}
+      ${this.tapCall(options, i)}
         ${this.tapResult(options.type)}
-      }`
-      : '';
+      `;
+    });
+    return code;
   }
 
   /** loop执行 */
@@ -132,7 +134,7 @@ export class HookCodeFactory {
   }
 
   /** tap执行函数 */
-  tapCall(options: CompileOptions, i?: number) {
+  tapCall(options: CompileOptions, i: number) {
     const { args } = options;
     let code = '';
     args.forEach((arg, idx) => {
@@ -143,7 +145,7 @@ export class HookCodeFactory {
       }
     });
     code = code.slice(0, -1);
-    return ` result = _x[${typeof i === 'number' ? i : 'i'}](${code});`;
+    return ` result = _x[${i}](${code});`;
   }
 
   /** 执行tap的结果处理逻辑 */
