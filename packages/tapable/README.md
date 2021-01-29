@@ -28,3 +28,4 @@ interceptor：register和tap可修改tap内容。
 
 实现SyncWaterfallHook，当没有taps时，返回的是传入的参数，但只会保留第一个参数。多个tap时，执行返回值没有就将入参传给下一个tap
 
+SyncLoopHook:执行do while循环，tap返回值不是undefined则继续循环

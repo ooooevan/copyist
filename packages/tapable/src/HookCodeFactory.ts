@@ -80,32 +80,59 @@ export class HookCodeFactory {
 
   /** 执行的函数以及拦截器函数 */
   contentWithInterceptors(options: CompileOptions) {
-    const _interceptorsTaps = options.interceptors.map((_i) => _i.tap).filter(Boolean);
-    const { taps } = options;
     return `
       ${this.callHook(options)}
-      ${this.tapBefore(options)}
-      ${
-        options.taps.length > 0
-          ? `for(let i=0;i<_taps.length;i++){
+      ${this.tapsBefore(options)}
+      ${this.content(options)}
+    `;
+  }
+
+  /** taps执行 */
+  content(options: CompileOptions) {
+    const _interceptorsTaps = options.interceptors.map((_i) => _i.tap).filter(Boolean);
+    return options.taps.length > 0
+      ? `for(let i=0;i<_taps.length;i++){
         const tap = _taps[i];
         ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap)`).join(';')}
         ${this.tapCall(options)}
         ${this.tapResult(options.type)}
       }`
-          : ''
-      }
-    `;
+      : '';
+  }
+
+  /** loop执行 */
+  contentLooping(options: CompileOptions) {
+    const _interceptorsTaps = options.interceptors.map((_i) => _i.tap).filter(Boolean);
+    let tapsCode = '';
+    options.taps.forEach((tap, i) => {
+      tapsCode += `
+        var tap = _taps[${i}];
+        ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap)`).join(';')}
+        ${this.tapCall(options, i)}
+        if(result !== undefined){
+          loop = true;
+          continue;
+        };
+        loop = false;
+        ${this.tapResult(options.type)}
+        `;
+    });
+    const code = `
+    let loop = false;
+    do{
+      ${tapsCode}
+    }while(loop)`;
+    return code;
   }
 
   /** tap执行前执行 */
-  tapBefore(options: CompileOptions) {
+  tapsBefore(options: CompileOptions) {
     return `let args = ${options.args[0]}
     let result = args;`;
   }
 
   /** tap执行函数 */
-  tapCall(options: CompileOptions) {
+  tapCall(options: CompileOptions, i?: number) {
     const { args } = options;
     let code = '';
     args.forEach((arg, idx) => {
@@ -116,7 +143,7 @@ export class HookCodeFactory {
       }
     });
     code = code.slice(0, -1);
-    return ` result = _x[i](${code});`;
+    return ` result = _x[${typeof i === 'number' ? i : 'i'}](${code});`;
   }
 
   /** 执行tap的结果处理逻辑 */

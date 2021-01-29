@@ -1,18 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { SyncBailHook, SyncHook, SyncWaterfallHook } from '.';
+import { SyncBailHook, SyncLoopHook, SyncHook, SyncWaterfallHook } from '.';
 
 function start() {
-  const h3 = new SyncHook(['test', 'arg2', 'arg3']);
-
-  const mock4 = () => 0;
-  const mock5 = () => 0;
-
-  h3.tap('E', mock4);
-  h3.tap('F', mock5);
-  h3.call('1', 2, 3);
-  console.log(h3.call.toString());
-  // console.log('promise', hook.promise.toString());
-  // console.log(hook.callAsync.toString());
+  const hook = new SyncLoopHook();
+  let idx = 0;
+  hook.tap('a', () => {
+    console.log('2');
+    if (idx < 10) {
+      idx++;
+      return true;
+    }
+    return undefined;
+  });
+  hook.tap('a', () => {
+    console.log('1');
+  });
+  hook.call();
+  // console.log(hook.call.toString());
+  // hook.call();
 }
 
 start();
