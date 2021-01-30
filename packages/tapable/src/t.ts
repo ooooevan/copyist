@@ -2,15 +2,23 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { SyncBailHook, SyncLoopHook, AsyncParallelHook, SyncHook, SyncWaterfallHook } from '.';
+import {
+  SyncBailHook,
+  SyncLoopHook,
+  AsyncParallelBailHook,
+  AsyncParallelHook,
+  SyncHook,
+  SyncWaterfallHook,
+} from '.';
 
 async function start() {
-  const hook = new AsyncParallelHook();
+  const hook = new AsyncParallelBailHook();
   hook.tap('a', () => {
     console.log(1);
   });
   hook.tapAsync('a', (cb) => {
     console.log(2);
+    return 1;
     setTimeout(cb, 1000);
   });
   // hook.callAsync(() => {
@@ -23,7 +31,7 @@ async function start() {
   //   });
   // });
   await hook.promise().then(console.log);
-  console.log(hook.promise.toString());
+  // console.log(hook.promise.toString());
   // console.log(hook.callAsync.toString());
   // const h1 = new SyncBailHook(['a']);
   // const r = h1.call(1);
