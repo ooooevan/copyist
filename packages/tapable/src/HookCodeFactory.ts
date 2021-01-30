@@ -136,16 +136,16 @@ export class HookCodeFactory {
   /** tap执行函数 */
   tapCall(options: CompileOptions, i: number) {
     const { args } = options;
-    let code = '';
+    let argCode = '';
     args.forEach((arg, idx) => {
       if (idx === 0) {
-        code += `result || ${options.args[0]},`;
+        argCode += `result || ${options.args[0]},`;
       } else {
-        code += `${arg},`;
+        argCode += `${arg},`;
       }
     });
-    code = code.slice(0, -1);
-    return ` result = _x[${i}](${code});`;
+    argCode = argCode.slice(0, -1);
+    return ` result = _x[${i}](${argCode});`;
   }
 
   /** 执行tap的结果处理逻辑 */

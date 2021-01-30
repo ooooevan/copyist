@@ -1,23 +1,45 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-implied-eval */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { SyncBailHook, SyncLoopHook, SyncHook, SyncWaterfallHook } from '.';
+import { SyncBailHook, SyncLoopHook, AsyncParallelHook, SyncHook, SyncWaterfallHook } from '.';
 
-function start() {
-  const hook = new SyncLoopHook();
-  let idx = 0;
+async function start() {
+  const hook = new AsyncParallelHook();
   hook.tap('a', () => {
-    console.log('2');
-    if (idx < 10) {
-      idx++;
-      return true;
-    }
-    return undefined;
+    console.log(1);
   });
-  hook.tap('a', () => {
-    console.log('1');
+  hook.tapAsync('a', (cb) => {
+    console.log(2);
+    setTimeout(cb, 1000);
   });
-  hook.call();
-  // console.log(hook.call.toString());
-  // hook.call();
+  // hook.callAsync(() => {
+  //   console.log('aaa');
+  // });
+  // await new Promise<void>((resolve) => {
+  //   hook.callAsync(() => {
+  //     console.log('callasync');
+  //     resolve();
+  //   });
+  // });
+  await hook.promise().then(console.log);
+  console.log(hook.promise.toString());
+  // console.log(hook.callAsync.toString());
+  // const h1 = new SyncBailHook(['a']);
+  // const r = h1.call(1);
+  // console.log(r === undefined);
+  // h1.tap('A', () => undefined);
+
+  // console.log(h1.call(1) === undefined);
+  // console.log((await h1.promise(1)) === undefined);
+  // h1.callAsync(1, console.log);
+
+  // h1.tap('B', (a) => `ok${a}`);
+  // console.log(h1.call(10) === 'ok10');
+  // console.log(await h1.promise(10));
+  // console.log(h1.promise.toString());
+
+  // ).toEqual('ok10');
 }
 
 start();

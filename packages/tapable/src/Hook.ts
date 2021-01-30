@@ -38,7 +38,7 @@ export class Hook {
     this._tap(TapType.sync, options, fn);
   };
 
-  tapAsync = (options: Tap | string, fn: (...args: string[]) => void) => {
+  tapAsync = (options: Tap | string, fn: (...args: any[]) => void) => {
     this._tap(TapType.async, options, fn);
   };
 
