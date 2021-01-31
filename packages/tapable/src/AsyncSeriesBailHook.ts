@@ -76,12 +76,40 @@ class AsyncSeriesBailHookCodeFactory extends HookCodeFactory {
     }`;
   }
 
-  callbackResult() {
-    return '';
+  callbackResult(type?: TapType) {
+    switch (type) {
+      case TapType.async: {
+        return `
+        if (count === 0){
+          callback(result);
+        }`;
+      }
+      case TapType.promise:
+      default: {
+        return `
+        if (count === 0){
+          resolve(result);
+        }`;
+      }
+    }
   }
 
-  tapsResult() {
-    return '';
+  promiseResult(type?: TapType) {
+    switch (type) {
+      case TapType.async: {
+        return `
+        if (count === 0){
+          callback(result);
+        }`;
+      }
+      case TapType.promise:
+      default: {
+        return `
+        if (count === 0){
+          resolve(result);
+        }`;
+      }
+    }
   }
 }
 const factory = new AsyncSeriesBailHookCodeFactory();

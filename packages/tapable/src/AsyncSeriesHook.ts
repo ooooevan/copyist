@@ -80,7 +80,7 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
     return '';
   }
 
-  tapsResult() {
+  promiseResult() {
     return '';
   }
 }

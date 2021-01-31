@@ -53,4 +53,13 @@ describe('AsyncSeriesBailHook', () => {
     expect(fn1).toBeCalledTimes(2);
     expect(fn2).toBeCalledTimes(0);
   });
+  it('没有tap，得到传入参数', async () => {
+    const hook = new AsyncSeriesBailHook(['a']);
+    await hook
+      .promise(123)
+      .then((res) => {
+        expect(res).toBe(123);
+      })
+      .catch(console.log);
+  });
 });

@@ -17,7 +17,12 @@ import {
 
 function start() {
   const hook = new AsyncSeriesWaterfallHook(['x']);
-
+  hook.tapAsync('a', (x, cb) => {
+    cb(2);
+  });
+  hook.tap('a', (x) => {
+    console.log(x);
+  });
   hook.callAsync(1, (e) => {
     console.log('call,', e);
   });
@@ -36,7 +41,7 @@ function start() {
   //     resolve();
   //   });
   // });
-  console.log(hook.callAsync.toString());
+  // console.log(hook.callAsync.toString());
   // console.log(hook.callAsync.toString());
   // const h1 = new SyncBailHook(['a']);
   // const r = h1.call(1);

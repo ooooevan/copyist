@@ -58,7 +58,7 @@ class AsyncParallelHookCodeFactory extends HookCodeFactory {
     return '';
   }
 
-  tapsResult() {
+  promiseResult() {
     return '';
   }
 }

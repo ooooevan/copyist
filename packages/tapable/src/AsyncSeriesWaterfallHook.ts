@@ -82,7 +82,7 @@ class AsyncSeriesWaterfallHookCodeFactory extends HookCodeFactory {
     return '';
   }
 
-  tapsResult() {
+  promiseResult() {
     return '';
   }
 }

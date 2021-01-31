@@ -21,7 +21,7 @@ export class HookCodeFactory {
         code += `
         return new Promise((resolve,reject) => {
           ${content}
-          ${this.tapsResult(options)}
+          ${this.promiseResult(options.type)}
         })
         `;
         fn = new Function(this.args(options), code) as ArgsFunction;
@@ -154,7 +154,7 @@ export class HookCodeFactory {
   }
 
   /** 执行完taps返回 */
-  tapsResult(options?: CompileOptions) {
+  promiseResult(type?: TapType) {
     return 'resolve()';
   }
 

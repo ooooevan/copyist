@@ -9,7 +9,7 @@ class SyncWaterfallHookCodeFactory extends HookCodeFactory {
   //   return `let args = [${this.args(options)}];
   //     let result=args;`;
   // }
-  tapsResult(options?: CompileOptions) {
+  promiseResult(type?: TapType) {
     return 'resolve(result)';
   }
 
