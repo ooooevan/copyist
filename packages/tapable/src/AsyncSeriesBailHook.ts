@@ -47,9 +47,9 @@ class AsyncSeriesBailHookCodeFactory extends HookCodeFactory {
       return `
       function _next${i}(){
         ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap${i})`).join(';')}
-        function _cb(){
-          if (result${i} !== undefined || --count <= 0) {
-            ${type === TapType.async ? `callback(result${i})` : `resolve(result${i})`};
+        function _cb(res){
+          if (res !== undefined || --count <= 0) {
+            ${type === TapType.async ? `callback(res)` : `resolve(res)`};
             return;
           }else{
             _next${i + 1}();

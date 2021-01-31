@@ -40,9 +40,9 @@ class AsyncParallelBailHookCodeFactory extends HookCodeFactory {
     }
     if (taps[i].type === TapType.async) {
       return `
-            function _cb(){
-              if (result${i} !== undefined || --count <= 0) {
-                ${type === TapType.async ? `callback(null, result${i})` : `resolve(result${i})`};
+            function _cb(res){
+              if (res !== undefined || --count <= 0) {
+                ${type === TapType.async ? `callback(null, res)` : `resolve(res)`};
                 return;
               }
             };
@@ -54,10 +54,8 @@ class AsyncParallelBailHookCodeFactory extends HookCodeFactory {
           if (!_p || !_p.then) {
             throw new Error('TapPromise回调未返回promsis');
           }
-          _p.then(() => {
-            if (--count <= 0) ${
-              type === TapType.async ? `callback(null, result${i})` : `resolve(result${i})`
-            };
+          _p.then((res) => {
+            if (--count <= 0) ${type === TapType.async ? `callback(null, res)` : `resolve(res)`};
           })
         `;
   }
