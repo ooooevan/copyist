@@ -4,7 +4,7 @@ import { Hook } from './Hook';
 import { HookCodeFactory } from './HookCodeFactory';
 import { CompileOptions, TapType } from './interfaces/Hook';
 
-class AsyncSeriesHookCodeFactory extends HookCodeFactory {
+class AsyncSeriesBailHookCodeFactory extends HookCodeFactory {
   content(options: CompileOptions) {
     let code = `var count = ${options.taps.length};`;
     options.taps.forEach((tap, i) => {
@@ -35,8 +35,8 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
         function _next${i}(){
           ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap${i})`).join(';')}
           var result${i} = _x[${i}](${argCode});
-          if (--count <= 0) {
-            ${type === TapType.async ? `callback()` : `resolve()`};
+          if (result${i} !== undefined || --count <= 0) {
+            ${type === TapType.async ? `callback(result${i})` : `resolve(result${i})`};
             return;
           }else{
             _next${i + 1}();
@@ -48,8 +48,8 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
       function _next${i}(){
         ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap${i})`).join(';')}
         function _cb(){
-          if (--count <= 0) {
-            ${type === TapType.async ? `callback()` : `resolve()`};
+          if (result${i} !== undefined || --count <= 0) {
+            ${type === TapType.async ? `callback(result${i})` : `resolve(result${i})`};
             return;
           }else{
             _next${i + 1}();
@@ -66,8 +66,8 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
         throw new Error('TapPromise回调未返回promsis');
       }
       _p.then((res) => {
-        if (--count <= 0) {
-          ${type === TapType.async ? `callback()` : `resolve()`};
+        if (result${i} !== undefined || --count <= 0) {
+          ${type === TapType.async ? `callback(result${i})` : `resolve(result${i})`};
           return;
         } else {
           _next${i + 1}();
@@ -84,16 +84,16 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
     return '';
   }
 }
-const factory = new AsyncSeriesHookCodeFactory();
+const factory = new AsyncSeriesBailHookCodeFactory();
 
-/** 异步串行，不关心参数传递 */
-export class AsyncSeriesHook extends Hook {
+/** 异步串行，返回值不为undefined停止后续返回 */
+export class AsyncSeriesBailHook extends Hook {
   compile(options: CompileOptions) {
     factory.setup(this, options);
     return factory.create(options);
   }
 
   _call() {
-    throw new Error('AsyncSeriesHook 不能使用call方法');
+    throw new Error('AsyncSeriesBailHook 不能使用call方法');
   }
 }

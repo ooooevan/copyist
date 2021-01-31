@@ -4,15 +4,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { AsyncParallelBailHook } from '../src';
 
-function pify(fn: (arg0: (err: any, result: any) => void) => void) {
-  return new Promise((resolve, reject) => {
-    fn((err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-}
-
 describe('AsyncParallelBailHook', () => {
   it('', async () => {
     const fn1 = jest.fn();

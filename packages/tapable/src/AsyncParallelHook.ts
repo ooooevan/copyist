@@ -54,22 +54,12 @@ class AsyncParallelHookCodeFactory extends HookCodeFactory {
         `;
   }
 
-  callbackResult(type?: TapType) {
-    switch (type) {
-      case TapType.async: {
-        return `
-        if (count === 0){
-          callback();
-        }`;
-      }
-      case TapType.promise:
-      default: {
-        return `
-        if (count === 0){
-          resolve();
-        }`;
-      }
-    }
+  callbackResult() {
+    return '';
+  }
+
+  tapsResult() {
+    return '';
   }
 }
 const factory = new AsyncParallelHookCodeFactory();
