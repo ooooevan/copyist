@@ -31,3 +31,6 @@ interceptor：register和tap可修改tap内容。
 SyncLoopHook:执行do while循环，tap返回值不是undefined则继续循环
 
 AsyncParallelBailHook:返回值不是undefined，停止后续执行
+
+AsyncSeriesHook:异步串行，不关心返回值
+

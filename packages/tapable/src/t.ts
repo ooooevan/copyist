@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable @typescript-eslint/no-misused-promises */
@@ -9,18 +10,29 @@ import {
   AsyncParallelHook,
   SyncHook,
   SyncWaterfallHook,
+  AsyncSeriesHook,
 } from '.';
 
 async function start() {
-  const hook = new AsyncParallelBailHook();
-  hook.tap('a', () => {
-    console.log(1);
+  const hook = new AsyncSeriesHook(['s']);
+  let i = 0;
+  hook.tapAsync('a', (a, cb) => {
+    i++;
+    setTimeout(() => {
+      console.log('-', a);
+      cb();
+    }, 100);
   });
-  hook.tapAsync('a', (cb) => {
-    console.log(2);
-    return 1;
-    setTimeout(cb, 1000);
+  hook.tap('a', (a) => {
+    i++;
+    console.log('--', a);
   });
+
+  // await new Promise((resolve) => {
+  //   hook.callAsync(1, () => {
+  //     resolve(1);
+  //   });
+  // });
   // hook.callAsync(() => {
   //   console.log('aaa');
   // });
@@ -30,7 +42,7 @@ async function start() {
   //     resolve();
   //   });
   // });
-  await hook.promise().then(console.log);
+  await hook.promise('1').then(() => console.log(hook.promise));
   // console.log(hook.promise.toString());
   // console.log(hook.callAsync.toString());
   // const h1 = new SyncBailHook(['a']);

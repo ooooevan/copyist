@@ -40,11 +40,11 @@ class AsyncParallelHookCodeFactory extends HookCodeFactory {
             function _cb(){
               if (--count <= 0) ${type === TapType.async ? `callback()` : `resolve()`};
             };
-            result = _x[${i}](${argCode ? `argCode, _cb` : '_cb'});
+            result = _x[${i}](${argCode ? `${argCode}, _cb` : '_cb'});
           `;
     }
     return `
-          _p = _x[${i}](${argCode ? `argCode, _cb` : '_cb'});
+          _p = _x[${i}](${argCode ? `${argCode}, _cb` : '_cb'});
           if (!_p || !_p.then) {
             throw new Error('TapPromise回调未返回promsis');
           }

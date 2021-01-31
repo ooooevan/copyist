@@ -46,11 +46,11 @@ class AsyncParallelBailHookCodeFactory extends HookCodeFactory {
                 return;
               }
             };
-            var result${i} = _x[${i}](${argCode ? `argCode, _cb` : '_cb'});
+            var result${i} = _x[${i}](${argCode ? `${argCode}, _cb` : '_cb'});
           `;
     }
     return `
-          _p = _x[${i}](${argCode ? `argCode, _cb` : '_cb'});
+          _p = _x[${i}](${argCode ? `${argCode}, _cb` : '_cb'});
           if (!_p || !_p.then) {
             throw new Error('TapPromise回调未返回promsis');
           }
@@ -82,7 +82,7 @@ class AsyncParallelBailHookCodeFactory extends HookCodeFactory {
 }
 const factory = new AsyncParallelBailHookCodeFactory();
 
-/** 异步并发，不关心函数返回值 */
+/** 异步并发，返回值不为undefined停止后续返回 */
 export class AsyncParallelBailHook extends Hook {
   compile(options: CompileOptions) {
     factory.setup(this, options);

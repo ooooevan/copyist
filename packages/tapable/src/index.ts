@@ -4,3 +4,4 @@ export { SyncWaterfallHook } from './SyncWaterfallHook';
 export { SyncLoopHook } from './SyncLoopHook';
 export { AsyncParallelHook } from './AsyncParallelHook';
 export { AsyncParallelBailHook } from './AsyncParallelBailHook';
+export { AsyncSeriesHook } from './AsyncSeriesHook';
