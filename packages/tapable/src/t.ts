@@ -12,19 +12,14 @@ import {
   SyncWaterfallHook,
   AsyncSeriesHook,
   AsyncSeriesBailHook,
+  AsyncSeriesWaterfallHook,
 } from '.';
 
-async function start() {
-  const hook = new AsyncSeriesBailHook(['s']);
-  let i = 0;
-  hook.tapAsync('a', (a, cb) => {
-    i++;
-    console.log('--', a);
-    cb(true);
-  });
-  hook.tap('a', (a) => {
-    i++;
-    console.log('-', a);
+function start() {
+  const hook = new AsyncSeriesWaterfallHook(['x']);
+
+  hook.callAsync(1, (e) => {
+    console.log('call,', e);
   });
 
   // await new Promise((resolve) => {
@@ -41,8 +36,7 @@ async function start() {
   //     resolve();
   //   });
   // });
-  await hook.promise('1').then(() => console.log(hook.promise));
-  // console.log(hook.promise.toString());
+  console.log(hook.callAsync.toString());
   // console.log(hook.callAsync.toString());
   // const h1 = new SyncBailHook(['a']);
   // const r = h1.call(1);

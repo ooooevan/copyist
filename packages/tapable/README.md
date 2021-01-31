@@ -34,3 +34,4 @@ AsyncParallelBailHook:返回值不是undefined，停止后续执行
 
 AsyncSeriesHook:异步串行，不关心返回值
 
+AsyncSeriesWaterfallHook: 异步串行，参数上下传递
