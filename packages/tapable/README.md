@@ -1,18 +1,21 @@
 # tapable
 
+类似EventListener，用于发布订阅事件，模仿[tapable](https://github.com/webpack/tapable)
 
 ## Usage
+
+```js
+const hook = new SyncHook(['arg1']);
+hook.tap('tap1', (arg1) =>{
+  console.log('tap执行：', arg1);
+})
+hook.call('1');
+// 输出：tap执行： 1
+```
 
 ## 基类Hook、HookCodeFactory
 
 Hook:用于注册taps，tap队列有优先级，使用插入排序
-
-```js
-const hook = new Hook();
-hook.tap('a', () =>{
-  console.log('..');
-})
-```
 
 interceptor：register和tap可修改tap内容。
 
@@ -20,18 +23,17 @@ interceptor：register和tap可修改tap内容。
 
 要重置call函数，将call函数实体提出。新建Factory类，用于创建执行的code
 
-分离基类Hook和SyncHook
+|方法|执行方式|备注|
+|-|-|-|
+|SyncHook|同步串行|
+|SyncBailHook|同步串行|返回值不是undefined，跳过后续tap执行并返回|
+|SyncWaterfallHook|同步串行|上一个tap返回值传给下一个tap|
+|SyncLoopHook|同步循环|返回值不是undefined，继续循环|
 
-开始实现SyncHook的promise和callAsync
+|ASyncParallelHook|异步并发|
+|ASyncParallelBailHook|异步并发|返回值不是undefined，跳过后续tap执行并返回|
+|ASyncSeriesHook|异步串行|
+|ASyncSeriesBailHook|异步串行|返回值不是undefined，跳过后续tap执行并返回|
+|ASyncSeriesWaterfallHook|异步串行|上一个tap返回值传给下一个tap|
 
-实现SyncBailHook，在之前基础上判断tap执行结果，不是undefined则直接返回当前结果。最后callback(null, result)。没有用try..catch处理异常
-
-实现SyncWaterfallHook，当没有taps时，返回的是传入的参数，但只会保留第一个参数。多个tap时，执行返回值没有就将入参传给下一个tap
-
-SyncLoopHook:执行do while循环，tap返回值不是undefined则继续循环
-
-AsyncParallelBailHook:返回值不是undefined，停止后续执行
-
-AsyncSeriesHook:异步串行，不关心返回值
-
-AsyncSeriesWaterfallHook: 异步串行，参数上下传递
+少了一些异常处理

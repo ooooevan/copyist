@@ -4,7 +4,7 @@ import { Hook } from './Hook';
 import { HookCodeFactory } from './HookCodeFactory';
 import { CompileOptions, TapType } from './interfaces/Hook';
 
-class AsyncSeriesHookCodeFactory extends HookCodeFactory {
+class AsyncSeriesLoopHookCodeFactory extends HookCodeFactory {
   content(options: CompileOptions) {
     let code = `var count = ${options.taps.length};`;
     options.taps.forEach((tap, i) => {
@@ -34,12 +34,13 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
       return `
         function _next${i}(){
           ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap${i})`).join(';')}
-          _x[${i}](${argCode});
-          if (--count <= 0) {
-            ${type === TapType.async ? `callback()` : `resolve()`};
-            return;
-          }else{
+          var result${i} = _x[${i}](${argCode});
+          if (result${i} !== undefined) {
+            _next0();
+          }else if (typeof _next${i + 1} !== 'undefined'){
             _next${i + 1}();
+          }else{
+            ${type === TapType.async ? `callback(result${i})` : `resolve(result${i})`};
           }
         }`;
     }
@@ -47,12 +48,13 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
       return `
       function _next${i}(){
         ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap${i})`).join(';')}
-        function _cb(){
-          if (--count <= 0) {
-            ${type === TapType.async ? `callback()` : `resolve()`};
-            return;
-          }else{
+        function _cb(res){
+          if (res !== undefined) {
+            _next0();
+          }else if (typeof _next${i + 1} !== 'undefined'){
             _next${i + 1}();
+          }else{
+            ${type === TapType.async ? `callback(res)` : `resolve(res)`};
           }
         };
         _x[${i}](${argCode ? `${argCode}, _cb` : '_cb'});
@@ -61,16 +63,26 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
     return `
     function _next${i}(){
       ${_interceptorsTaps.map((_t, i) => `_interceptorsTaps[${i}](tap${i})`).join(';')}
+      function _cb(res){
+        if (res !== undefined) {
+          _next0();
+        }else if (typeof _next${i + 1} !== 'undefined'){
+          _next${i + 1}();
+        }else{
+          ${type === TapType.async ? `callback(res)` : `resolve(res)`};
+        }
+      };
       _p = _x[${i}](${argCode ? `${argCode}, _cb` : '_cb'});
       if (!_p || !_p.then) {
         throw new Error('TapPromise回调未返回promsis');
       }
       _p.then((res) => {
-        if (--count <= 0) {
-          ${type === TapType.async ? `callback()` : `resolve()`};
-          return;
-        } else {
+        if (res !== undefined) {
+          _next0();
+        }else if (typeof _next${i + 1} !== 'undefined'){
           _next${i + 1}();
+        }else{
+          ${type === TapType.async ? `callback(res)` : `resolve(res)`};
         }
       })
     }`;
@@ -84,16 +96,16 @@ class AsyncSeriesHookCodeFactory extends HookCodeFactory {
     return '';
   }
 }
-const factory = new AsyncSeriesHookCodeFactory();
+const factory = new AsyncSeriesLoopHookCodeFactory();
 
-/** 异步串行，不关心参数传递 */
-export class AsyncSeriesHook extends Hook {
+/** 异步循环，返回值不是undefined继续循环 */
+export class AsyncSeriesLoopHook extends Hook {
   compile(options: CompileOptions) {
     factory.setup(this, options);
     return factory.create(options);
   }
 
   _call() {
-    throw new Error('AsyncSeriesHook 不能使用call方法');
+    throw new Error('AsyncSeriesLoopHook 不能使用call方法');
   }
 }

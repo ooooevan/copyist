@@ -5,5 +5,6 @@ export { SyncLoopHook } from './SyncLoopHook';
 export { AsyncParallelHook } from './AsyncParallelHook';
 export { AsyncParallelBailHook } from './AsyncParallelBailHook';
 export { AsyncSeriesHook } from './AsyncSeriesHook';
+export { AsyncSeriesLoopHook } from './AsyncSeriesLoopHook';
 export { AsyncSeriesBailHook } from './AsyncSeriesBailHook';
 export { AsyncSeriesWaterfallHook } from './AsyncSeriesWaterfallHook';
