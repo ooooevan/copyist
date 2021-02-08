@@ -346,15 +346,15 @@ function anonymous(){
   let result;
   for(let i=0;i<_taps.length;i++){
     _interceptorsTaps.map((_interceptorsTap, idx) => {
-      // 3.1 先执行tap拦截器函数
-        _interceptorsTaps[idx](tap);
-      }
-      // 3.2 再执行tap函数
-      result = _x[tIdx]();
-      if (result !== undefined) {
-        // 4、tap返回值不是undefined，不再往下执行
-        return;
-      }
+    // 3.1 先执行tap拦截器函数
+      _interceptorsTaps[idx](tap);
+    })
+    // 3.2 再执行tap函数
+    result = _x[tIdx]();
+    if (result !== undefined) {
+      // 4、tap返回值不是undefined，不再往下执行
+      return;
+    }
   }
 }
 ```
