@@ -19,4 +19,4 @@ eslint配置
 create-react-app，拉取react脚手架
 
 ## @copyist/tapable
-tapable
+事件订阅/发布

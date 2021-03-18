@@ -1,14 +1,11 @@
 {
-  "name": "@copyist/create-react-app",
+  "name": "@copyist/",
   "version": "0.1.2",
-  "description": "create-react-app",
+  "description": "",
   "author": "ooooevan <635638508@qq.com>",
   "homepage": "https://github.com/ooooevan/copyist#readme",
   "license": "MIT",
   "main": "lib/index.js",
-  "bin": {
-    "cra": "./lib/index.js"
-  },
   "scripts": {
     "tsc": "tsc -w"
   },
@@ -32,13 +29,8 @@
     "url": "https://github.com/ooooevan/copyist/issues"
   },
   "devDependencies": {
-    "@types/fs-extra": "^9.0.6",
-    "@types/semver": "^7.3.4"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
-    "fs-extra": "^9.1.0",
-    "semver": "^7.3.4"
   },
   "gitHead": "79f6c3f28eb8ba31d9c1956603d7e928ea3ac169"
 }
