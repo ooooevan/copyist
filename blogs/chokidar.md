@@ -99,3 +99,5 @@ nodejs扩展摸模块，调用macos底层api及相关文件监控事件，避免
 [精读《如何利用 Nodejs 监听文件夹》](https://juejin.cn/post/6844903617300791310)
 
 [源码解读系列之 chokidar](https://juejin.cn/post/6844903956359938061)
+
+[前端如何实时监听本地代码文件的修改变动？——chokidar模块详解](https://www.bilibili.com/read/cv5011048/)
