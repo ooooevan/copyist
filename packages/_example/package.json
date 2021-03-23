@@ -1,6 +1,6 @@
 {
   "name": "@copyist/example",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "",
   "author": "ooooevan <635638508@qq.com>",
   "homepage": "https://github.com/ooooevan/copyist#readme",
@@ -27,10 +27,6 @@
   },
   "bugs": {
     "url": "https://github.com/ooooevan/copyist/issues"
-  },
-  "devDependencies": {
-  },
-  "dependencies": {
   },
   "gitHead": "79f6c3f28eb8ba31d9c1956603d7e928ea3ac169"
 }
