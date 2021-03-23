@@ -1,4 +1,4 @@
-## download-git-repo
+## @copyist/download-git-repo
 
 搬自[download-git-repo](https://gitlab.com/flippidippi/download-git-repo)并做一些优化
 
@@ -19,7 +19,6 @@ yarn add @copyist/download-git-repo
 * 克隆仓库（clone: true）使用git clone下载仓库
 * 不可隆，会拼接成仓库的zip包，文件更小
 
-
 #### 流程：
 1. 判断是否direct，是则直接git-clone或下载压缩包
 2. 用正则匹配出url得到type、origin、owner、name、checkout。type支持github|gitlab|bitbucket
@@ -35,11 +34,8 @@ yarn add @copyist/download-git-repo
 1. 改了git-clone，错误时显示错误信息
 2. 传入http地址或`/.git$/`地址，当做direct模式处理
 3. type:owner/repo模式，拼接成https链接，避免权限问题
-4. 使用ts并优化了点代码，测试用例中`github`域名有网络问题，其他较稳定
-
+4. 使用ts并优化了代码，测试用例中`github`域名有网络问题，其他较稳定
 
 
 ## 参考
 [git clone几种可选参数的使用与区别](https://blog.csdn.net/shrimpcolo/article/details/80164741)
-
-
