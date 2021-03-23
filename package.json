@@ -5,7 +5,7 @@
     "commit": "git-cz",
     "test": "jest",
     "lint": "lint-staged",
-    "tsc": "lerna exec --scope @copyist/tapable -- tsc",
+    "tsc": "lerna exec --scope @copyist/tapable --scope @copyist/download-git-repo -- tsc",
     "pub": "yarn tsc && lerna publish"
   },
   "lint-staged": {
