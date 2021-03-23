@@ -11,7 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\packages\\tapable\\src\\t.ts",
+      "program": "${workspaceFolder}\\packages\\download-git-repo\\src\\index.ts",
       // "outFiles": [
       //   "${workspaceFolder}/**/*.js"
       // ]

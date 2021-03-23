@@ -1,7 +1,7 @@
 # 
 
 
-lerna add xxx --scope chokidar# 
+lerna add xxx --scope @copyist/chokidar 
 
 ## Usage
 

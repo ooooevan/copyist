@@ -6,6 +6,7 @@
   "homepage": "https://github.com/ooooevan/copyist#readme",
   "license": "MIT",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "bin": {
     "cra": "./lib/index.js"
   },

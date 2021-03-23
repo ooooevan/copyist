@@ -1,0 +1,44 @@
+{
+	"name": "@copyist/download-git-repo",
+	"version": "0.1.2",
+	"description": "",
+	"author": "ooooevan <635638508@qq.com>",
+	"homepage": "https://github.com/ooooevan/copyist#readme",
+	"license": "MIT",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"scripts": {
+		"test": "jest",
+		"tsc": "tsc -w"
+	},
+	"directories": {
+		"lib": "lib",
+		"test": "__tests__"
+	},
+	"files": [
+		"lib",
+		"package.json",
+		"README.md"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ooooevan/copyist.git"
+	},
+	"bugs": {
+		"url": "https://github.com/ooooevan/copyist/issues"
+	},
+	"dependencies": {
+		"download": "^8.0.0",
+		"fs-readdir-recursive": "^1.1.0",
+		"rimraf": "^3.0.2"
+	},
+	"gitHead": "79f6c3f28eb8ba31d9c1956603d7e928ea3ac169",
+	"devDependencies": {
+		"@types/download": "^6.2.4",
+		"@types/fs-readdir-recursive": "^1.0.0",
+		"@types/rimraf": "^3.0.0"
+	}
+}
