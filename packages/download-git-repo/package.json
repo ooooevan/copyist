@@ -1,7 +1,7 @@
 {
 	"name": "@copyist/download-git-repo",
 	"version": "0.2.1",
-	"description": "",
+	"description": "download-git-repo",
 	"author": "ooooevan <635638508@qq.com>",
 	"homepage": "https://github.com/ooooevan/copyist#readme",
 	"license": "MIT",

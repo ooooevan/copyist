@@ -4,7 +4,7 @@
   "description": "tapable",
   "author": "ooooevan <635638508@qq.com>",
   "homepage": "https://github.com/ooooevan/copyist#readme",
-  "license": "ISC",
+  "license": "MIT",
   "main": "lib/index.js",
   "bin": {
     "cra": "./lib/index.js"
